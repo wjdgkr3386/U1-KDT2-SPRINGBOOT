@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- html 태그에 thymeleaf namespace 선언 -->
+<html  xmlns:th="http://www.Thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 - 글 쓰기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">글 쓰기</h1>
+    <!-- form 태그에 th:action, th:object 추가 -->
+    <form th:action="@{/write}" method="post" th:object="${articleInput}">
+        <div class="mb-3">
+            <label for="subject" class="form-label">제목</label>
+            <!-- input 태그에 th:field 추가 -->
+            <input type="text" class="form-control" id="subject"  th:field="*{subject}" >
+             <!-- 에러 메세지 출력 부분 변경 -->
+             <div th:errors="*{subject}" class="alert alert-danger mt-2"></div>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">작성자</label>
+            <!-- input 태그에 th:field 추가 -->
+            <input type="text" class="form-control" id="author"  th:field="*{author}" >
+             <!-- 에러 메세지 출력 부분 변경 -->
+      		<div th:errors="*{author}" class="alert alert-danger mt-2"></div>
+        </div>
+        <div class="mb-3">
+            <label for="contents" class="form-label">내용</label>
+            <!-- textarea 태그에 th:field 추가 -->
+            <textarea class="form-control" id="contents"  th:field="*{contents}" rows="10" ></textarea>
+             <!-- 에러 메세지 출력 부분 변경 -->
+      		<div th:errors="*{contents}" class="alert alert-danger mt-2"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">작성</button>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 인터페이스 패키지 경로를 정확히 일치시켜야 함 -->
+<mapper namespace="com.example.demo.mapper.ArticleMapper">
+ <resultMap type="com.example.demo.domain.Article" id="articleResultMap">
+ 	<id property="id" column="id"/>
+ 	<result property="subject" column="subject"/>
+ 	<result property="content" column="content"/>
+ 	<result property="author" column="author"/>
+ 	<collection property="comments" column="id" 
+ 	            ofType="com.example.demo.domain.Comment" 
+ 	            select="selectCommentsByArticleId"/>
+ </resultMap>
+ 
+     <!-- resultMap 을 사용하는 방식으로 변경함 -->
+  <select id="getArticleById" resultMap="articleResultMap">
+     select * from article where id=#{id}
+    </select>
+    
+ <!-- Select query for selectCommentsByArticleId -->
+  <select id="selectCommentsByArticleId" resultType="com.example.demo.domain.Comment">
+     select * from comment where article_id=#{articleId}
+  </select>
+
+
+    <!-- Insert 쿼리 정의 -->
+    <insert id="insertArticle">
+        INSERT INTO article (subject, contents, author, user_id)
+        VALUES (#{subject}, #{contents}, #{author}, #{userId})
+    </insert>
+    
+    <select id="getAllArticles" resultType="com.example.demo.domain.Article">
+     SELECT a.*, COUNT(c.id) as comment_count
+        FROM article a
+        LEFT JOIN comment c ON a.id = c.article_id
+        GROUP BY a.id
+    </select>
+    
+    <update id="updateArticle">
+      update article
+         set subject = #{subject}, contents=#{contents}, updated_at = now()
+       where id=#{id}
+    </update>  
+    
+    <delete id="deleteArticle">
+    	delete from article where id=#{id}
+    </delete>
+ 
+</mapper>
